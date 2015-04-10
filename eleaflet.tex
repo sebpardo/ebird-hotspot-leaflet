@@ -1,0 +1,47 @@
+\documentclass[8pt,letterpaper,notumble,foldmark]{leaflet} 
+\CutLine*{1} % adds dotted lines between pages
+\CutLine*{3} 
+\CutLine*{4}
+\CutLine*{6}
+
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage{multirow}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage[table,svgnames]{xcolor} % to alternate row colours
+
+\begin{document}
+% smaller, narrower font
+\fontfamily{phv}\fontseries{mc}\selectfont
+
+\section{Trout Lake}
+
+This is a test.
+
+\newpage
+% pages 2, 3 and 4 are for the checklist table
+
+\linespread{0}
+
+{\tiny
+\tabcolsep=0.005cm
+\rowcolors{1}{white}{Beige}
+% Options: WhiteSmoke, LightCyan
+
+\begin{longtable}{|l|llllllllllllllllllllllllllllllllllllllllllllllll|}
+\hline
+Species & \multicolumn{4}{c}{Jan} & \multicolumn{4}{c}{Feb} & \multicolumn{4}{c}{Mar} &
+\multicolumn{4}{c}{Apr} & \multicolumn{4}{c}{May} & \multicolumn{4}{c}{Jun} &
+\multicolumn{4}{c}{Jul} & \multicolumn{4}{c}{Aug} & \multicolumn{4}{c}{Sep} &
+\multicolumn{4}{c}{Oct} & \multicolumn{4}{c}{Nov} & \multicolumn{4}{c}{Dec} \\
+\hline
+\endhead
+
+\input{bt}
+
+\hline
+\end{longtable}
+}
+
+\end{document}
