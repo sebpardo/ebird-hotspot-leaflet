@@ -10,15 +10,14 @@ require(xtable)
 ebird <- read.delim("BarChart", skip=15, stringsAsFactors=F,
                   header=FALSE)
 
-ebirdss <- read.delim("BarChart", skip=12, stringsAsFactors=F,
-                      header=FALSE)
-
 head(ebird)
 str(ebird)
 dim(ebird)
 
+ebirdss <- read.delim("BarChart", skip=13, stringsAsFactors=F, nrows=1,
+                      header=FALSE)
 head(ebirdss)
-sample.size <- as.numeric(ebirdss[2,-1])
+sample.size <- as.numeric(ebirdss[-1])
 zeros <- which(sample.size == 0)+1
 zeros
 
