@@ -9,9 +9,18 @@ require(xtable)
 
 ebird <- read.delim("BarChart", skip=15, stringsAsFactors=F,
                   header=FALSE)
+
+ebirdss <- read.delim("BarChart", skip=12, stringsAsFactors=F,
+                      header=FALSE)
+
 head(ebird)
 str(ebird)
 dim(ebird)
+
+head(ebirdss)
+sample.size <- as.numeric(ebirdss[2,-1])
+zeros <- which(sample.size == 0)+1
+zeros
 
 # removing the last empty column
 ebird %<>% select(-V50)
@@ -49,13 +58,21 @@ ebird[str_length(ebird$Species)>28,]
 
 ebird2 <- ebird
 
+
 # changing colnames to smaller values (doesn't matter anymore as
 # xtable output doesn't include colnames & headers are specified in .tex file)
 colnames(ebird2) <- c("Species", week4)
 
 # transforming each proportion to an integer, so that:
 # 0<0.1 -> 1, 0.1<0.2 -> 2, etc...
-ebird2[,-1] <- floor(ebird[,-1]*10)
+ebird2[,-1] <- ceiling(ebird[,-1]*10)
+
+# replacing columns with zero observations with "u" so that image file
+# shows lack of sampling
+
+sum(ebird[,zeros])
+sum(ebird2[,zeros])
+ebird2[,zeros]<- "u"
 
 # Replacing all values between 9 and 10 (0.9 and 1.0) with 9,
 # s in eBird the full bar (size 9) is used for anything above 0.8
@@ -82,3 +99,4 @@ print.xtable(sightchart, file="bt.tex",
              include.colnames = FALSE,
              only.contents=TRUE,
              sanitize.text.function = function(x) {x})
+
