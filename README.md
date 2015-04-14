@@ -9,4 +9,6 @@ into a format that can be imported in LaTex using [R](http://r-project.org).
 Then the file with eBird data gets turned into a LaTeX table to be added to
 the leaflet .tex file.
 
+Leaflet so far:
 
+![](eleaflet.pdf)
