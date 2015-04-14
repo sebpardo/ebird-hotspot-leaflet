@@ -1,5 +1,5 @@
 # Description: Grabs eBird BarChart output (from website, to be done 
-# through R in the future), and turns it into a LaTeX table with xtable
+# through R in the future), and saves it as a LaTeX table with xtable()
 
 require(dplyr)
 require(magrittr)
@@ -46,15 +46,32 @@ dim(ebird)
 ebird$Species
 
 # Removing hybrids (looking for " x " string)
-#ebird <- ebird[!(str_detect(ebird$Species, " x ")),]
+ebird <- ebird[!(str_detect(ebird$Species, " x ")),]
 
-# Removing records between two similar species (looking for "/" string)
-#ebird <- ebird[!(str_detect(ebird$Species, "/")),]
+# Removing records of two species together (looking for "/" string)
+ebird <- ebird[!(str_detect(ebird$Species, "/")),]
 
+# Finding common names longer than 28 characters
 ebird[str_length(ebird$Species)>28,]
+
+# Shortening really long common names has to be done by hand
+ebird[ebird$Species=="Northern Rough-winged Swallow","Species"] <- "N. Rough-winged Swallow"
 
 #test <- filter(ebird, Species== "American Goldfinch")
 
+# Removing rare species, which for this filter are defined as species
+# with observations in only one week (could still be multiple days
+# within that week, or multiple observations in the same week but in
+# different years)
+notzeros <- apply(ebird[,-1],1, function (x) length(which(x != 0)))
+lessone <- notzeros <= 1
+rare <- ebird[lessone,"Species"]
+ebird <- ebird[!lessone,]
+
+#
+raresp <- paste(rare, collapse = ", ")
+cat(raresp, file="raresp.txt")
+                   
 ebird2 <- ebird
 
 
@@ -66,7 +83,7 @@ colnames(ebird2) <- c("Species", week4)
 # 0<0.1 -> 1, 0.1<0.2 -> 2, etc...
 ebird2[,-1] <- ceiling(ebird[,-1]*10)
 
-# replacing columns with zero observations with "u" so that image file
+# replacing weeks with zero observations with "u" so that image file
 # shows lack of sampling
 
 sum(ebird[,zeros])
@@ -74,7 +91,7 @@ sum(ebird2[,zeros])
 ebird2[,zeros]<- "u"
 
 # Replacing all values between 9 and 10 (0.9 and 1.0) with 9,
-# s in eBird the full bar (size 9) is used for anything above 0.8
+# as in eBird the full bar (size 9) is used for anything above 0.8
 ebird2[ebird2 == 10] <- 9
 
 # Replacing content of each cell with .png file according to integer value
