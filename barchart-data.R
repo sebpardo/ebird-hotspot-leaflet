@@ -32,6 +32,15 @@ colnames(ebird) <- c("Species", paste0(months4,week4))
 ebird[,-1] <- apply(ebird[,-1],2,as.numeric)
 str(ebird)
 
+########################################
+# Data manipulation above not needed when using ebirdchart()
+
+
+# Loading data using ebirdchart() function
+troutlake <- ebirdchart("L196159")
+ebird <- troutlake$barchart
+sample.size <- troutlake$sample.size
+
 # removing text within parentheses for species name
 ebird$Species <- str_replace(ebird$Species, " \\(.*\\)", "")
 
