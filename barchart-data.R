@@ -5,36 +5,6 @@ require(dplyr)
 require(stringr)
 require(xtable)
 
-ebird <- read.delim("BarChart", skip=15, stringsAsFactors=F,
-                  header=FALSE)
-
-head(ebird)
-str(ebird)
-dim(ebird)
-
-ebirdss <- read.delim("BarChart", skip=13, stringsAsFactors=F, nrows=1,
-                      header=FALSE)
-head(ebirdss)
-sample.size <- as.numeric(ebirdss[-1])
-zeros <- which(sample.size == 0)+1
-zeros
-
-# removing the last empty column
-ebird %<>% select(-V50)
-
-# renaming each column based on the four weeks within each month 
-months <- c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec")
-months4 <- rep(months, each=4)
-week4 <- rep(1:4, 12)
-colnames(ebird) <- c("Species", paste0(months4,week4))
-
-# transforming all values of proportional abundance as numeric
-ebird[,-1] <- apply(ebird[,-1],2,as.numeric)
-str(ebird)
-
-########################################
-# Data manipulation above not needed when using ebirdchart()
-
 
 # Loading data using ebirdchart() function
 troutlake <- ebirdchart("L196159")
