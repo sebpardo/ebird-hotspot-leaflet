@@ -1,4 +1,4 @@
-### ebirdchart(): R function to download eBird Hotspot Explorer data (and LaTeX template to make a leaflet with it)
+### ebirdchart: download eBird Hotspot Explorer data across years (and make leaflets with it)
 
 This code  provides the [`ebirdchart`](ebirdchart.R) function for [R](http://r-project.org) which downloads the bar chart
 data provided by [eBird](http://www.ebird.org) though their website. The function `ebirdchart` does not query eBird's API
