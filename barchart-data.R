@@ -2,9 +2,7 @@
 # through R in the future), and saves it as a LaTeX table with xtable()
 
 require(dplyr)
-require(magrittr)
 require(stringr)
-require(readr)
 require(xtable)
 
 ebird <- read.delim("BarChart", skip=15, stringsAsFactors=F,
@@ -28,9 +26,7 @@ ebird %<>% select(-V50)
 months <- c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec")
 months4 <- rep(months, each=4)
 week4 <- rep(1:4, 12)
-colnames(ebird) <- c("Species",str_c(months4,week4))
-#testing with tiny colnames
-
+colnames(ebird) <- c("Species", paste0(months4,week4))
 
 # transforming all values of proportional abundance as numeric
 ebird[,-1] <- apply(ebird[,-1],2,as.numeric)
@@ -38,12 +34,9 @@ str(ebird)
 
 # removing text within parentheses for species name
 ebird$Species <- str_replace(ebird$Species, " \\(.*\\)", "")
-str(ebird)
 
 # Removing instances of records of Genus sp.
 ebird <-ebird[!(str_detect(ebird$Species, "sp\\.")),]
-dim(ebird)
-ebird$Species
 
 # Removing hybrids (looking for " x " string)
 ebird <- ebird[!(str_detect(ebird$Species, " x ")),]
@@ -68,12 +61,11 @@ lessone <- notzeros <= 1
 rare <- ebird[lessone,"Species"]
 ebird <- ebird[!lessone,]
 
-#
+# Saving all rare species in a single string
 raresp <- paste(rare, collapse = ", ")
 cat(raresp, file="raresp.txt")
                    
 ebird2 <- ebird
-
 
 # changing colnames to smaller values (doesn't matter anymore as
 # xtable output doesn't include colnames & headers are specified in .tex file)
@@ -85,9 +77,6 @@ ebird2[,-1] <- ceiling(ebird[,-1]*10)
 
 # replacing weeks with zero observations with "u" so that image file
 # shows lack of sampling
-
-sum(ebird[,zeros])
-sum(ebird2[,zeros])
 ebird2[,zeros]<- "u"
 
 # Replacing all values between 9 and 10 (0.9 and 1.0) with 9,
@@ -105,14 +94,9 @@ for (i in seq_along(ebird2)[-1]) {
 sightchart <- xtable(ebird2)
 
 # Exporting to .tex file
-# Paste before \begin{tab...}
-#   \tabcolsep=0.005cm
 print.xtable(sightchart, file="bt.tex", 
-             size = "tiny",
              tabular.environment = "longtable",
-             #width = "9in",
              include.rownames = FALSE,
              include.colnames = FALSE,
              only.contents=TRUE,
              sanitize.text.function = function(x) {x})
-
