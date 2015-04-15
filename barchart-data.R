@@ -5,6 +5,7 @@ require(dplyr)
 require(stringr)
 require(xtable)
 
+source("ebirdchart.R")
 
 # Loading data using ebirdchart() function
 troutlake <- ebirdchart("L196159")
@@ -24,7 +25,7 @@ ebird <- ebird[!(str_detect(ebird$Species, " x ")),]
 ebird <- ebird[!(str_detect(ebird$Species, "/")),]
 
 # Finding common names longer than 28 characters
-ebird[str_length(ebird$Species)>28,]
+ebird[str_length(ebird$Species)>28, 1]
 
 # Shortening really long common names has to be done by hand
 ebird[ebird$Species=="Northern Rough-winged Swallow","Species"] <- "N. Rough-winged Swallow"
@@ -35,7 +36,8 @@ ebird[ebird$Species=="Northern Rough-winged Swallow","Species"] <- "N. Rough-win
 # with observations in only one week (could still be multiple days
 # within that week, or multiple observations in the same week but in
 # different years)
-notzeros <- apply(ebird[,-1],1, function (x) length(which(x != 0)))
+
+notzeros <- apply(ebird[,-1], 1, function (x) length(which(x != 0)))
 lessone <- notzeros <= 1
 rare <- ebird[lessone,"Species"]
 ebird <- ebird[!lessone,]
@@ -46,17 +48,14 @@ cat(raresp, file="raresp.txt")
                    
 ebird2 <- ebird
 
-# changing colnames to smaller values (doesn't matter anymore as
-# xtable output doesn't include colnames & headers are specified in .tex file)
-colnames(ebird2) <- c("Species", week4)
-
 # transforming each proportion to an integer, so that:
 # 0<0.1 -> 1, 0.1<0.2 -> 2, etc...
 ebird2[,-1] <- ceiling(ebird[,-1]*10)
 
 # replacing weeks with zero observations with "u" so that image file
 # shows lack of sampling
-ebird2[,zeros]<- "u"
+zeros <- which(sample.size == 0)+1
+ebird2[,zeros] <- "u"
 
 # Replacing all values between 9 and 10 (0.9 and 1.0) with 9,
 # as in eBird the full bar (size 9) is used for anything above 0.8
