@@ -2,8 +2,8 @@
 
 This code  provides the [`ebirdchart`](ebirdchart.R) function for [R](http://r-project.org) which downloads the bar chart
 data provided by [eBird](http://www.ebird.org) though their website. The function `ebirdchart` does not query eBird's API
-interface the way [`rebird`](https://github.com/ropensci/rebird) by @ropensci does, but
-uses instead the URL-based interface in eBird's [Hotspot Wxplorer](http://ebird.org/ebird/hotspots) details pages.
+interface the way the functions in [`rebird`](https://github.com/ropensci/rebird) do; instead it uses 
+the URL-based interface in eBird's [Hotspot Explorer](http://ebird.org/ebird/hotspots) details pages (example [here](http://ebird.org/ebird/canada/GuideMe?cmd=decisionPage&getLocations=hotspots&hotspots=L196159&yr=all&m=)). 
 
 This repository also provides code to manipulates the output from `ebirchart` to create a leaflet template in LaTeX
 without having to fuss over about formatting a LaTeX table into it.
