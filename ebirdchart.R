@@ -32,6 +32,11 @@ ebirdchart <- function (locID, bYear=1900, eYear=format(Sys.Date(), "%Y"),
         "&eMonth=",
         eMonth,
         "&reportType=location&")
+
+
+  # Saving date and time of eBird query
+  query.time <- Sys.time()  
+  # Downloading eBird data
   hotspot.chart <- read.delim(chart.url, stringsAsFactors=F, header=FALSE)
   
   # wrangling data frame
@@ -58,6 +63,7 @@ ebirdchart <- function (locID, bYear=1900, eYear=format(Sys.Date(), "%Y"),
   return(list(n.taxa=n.taxa,
               sample.size=sample.size[col.weeks-1],
               locID=locID,
+              query.time=query.time,
               barchart=barchart[,c(1,col.weeks)]))
 }
 

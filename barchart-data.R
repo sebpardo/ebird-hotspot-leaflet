@@ -43,7 +43,7 @@ rare <- ebird[lessone,"Species"]
 ebird <- ebird[!lessone,]
 
 # Saving all rare species in a single string
-raresp <- paste(rare, collapse = ", ")
+raresp <- paste0(paste(rare, collapse = ", "),".")
 cat(raresp, file="raresp.txt")
                    
 ebird2 <- ebird
@@ -67,6 +67,10 @@ ebird2[ebird2 == 10] <- 9
 for (i in seq_along(ebird2)[-1]) {
   ebird2[,i] <- paste0("\\includegraphics{bars/s-", ebird2[,i],".png}")
 }
+
+# Saving all rare species in a single string
+qtime <- format(troutlake$query.time, "%B %d %Y at %I:%M %p %Z")
+cat(paste("eBird database accessed on",qtime), file="qtime.txt") 
 
 # Creating xtable object
 sightchart <- xtable(ebird2)
