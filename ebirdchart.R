@@ -37,10 +37,9 @@ ebirdchart <- function (locID, bYear=1900, eYear=format(Sys.Date(), "%Y"),
   # Saving date and time of eBird query
   query.time <- Sys.time()  
   # Downloading eBird data
-  hotspot.chart <- read.delim(chart.url, stringsAsFactors=F, header=FALSE)
+  hotspot.chart <- read.delim(chart.url, stringsAsFactors=F, header=FALSE)[,-50]
   
   # wrangling data frame
-  hotspot.chart <- hotspot.chart[,-50]
   n.taxa <- as.numeric(hotspot.chart[2,2])
   if(n.taxa == 0) {
     stop(paste0("Hotspot '",locID,"' doesn't exist or has no sightings"))
@@ -50,10 +49,8 @@ ebirdchart <- function (locID, bYear=1900, eYear=format(Sys.Date(), "%Y"),
   barchart[,-1] <- apply(barchart[,-1],2,as.numeric)
   
   # adding colnames
-  months4 <- rep(c("Jan","Feb","Mar","Apr","May","Jun",
-              "Jul","Aug","Sep","Oct","Nov","Dec"), each=4)
-  colnames(barchart) <- c("Species",paste0(months4, rep(1:4, 12)))
-  names(sample.size) <- paste0(months4, rep(1:4, 12))
+  colnames(barchart) <- c("Species", sapply(month.abb, paste0, 1:4))
+  names(sample.size) <- sapply(month.abb, paste0, 1:4)
   
   nweeks <- (length(bMonth:eMonth)) * 4
   start.week <- ( (bMonth - 1) * 4) + 2
