@@ -1,4 +1,4 @@
-\documentclass[8pt,letterpaper,notumble,foldmark]{leaflet} 
+\documentclass[letterpaper,notumble,foldmark]{leaflet} 
 \CutLine*{1} % adds dotted lines between pages
 \CutLine*{3} 
 \CutLine*{4}
@@ -10,55 +10,59 @@
 \usepackage{tabularx}
 \usepackage{longtable}
 \usepackage[table,svgnames]{xcolor} % to alternate row colours
-\setmargins{15mm}{15mm}{10mm}{10mm} %t,b,l,r
+\setmargins{5mm}{1mm}{10mm}{10mm} %t,b,l,r
+\usepackage[T1]{fontenc} % for Raleway font
+\usepackage[default]{raleway}
+\usepackage{array}
 
 \begin{document}
 % smaller, narrower font
-\fontfamily{phv}\fontseries{mc}\selectfont
-
+%\setmargins{10mm}{3mm}{8mm}{8mm} %t,b,l,r
 
 \input{page1}
 
-\newpage
-\setmargins{10mm}{10mm}{2mm}{2mm} %t,b,l,r
+\clearpage\setmargins{5mm}{19mm}{4mm}{4mm} %t,b,l,r
 % pages 2, 3 and 4 are for the checklist table
+% for some reason the top and bottom margins aren't
+% reset with the \setmargin command above, but the 
+% left and right margins are...
 
-\linespread{0}
-
-{\footnotesize
+\linespread{0.1}
+\fontfamily{phv}\fontseries{mc}\selectfont
+\footnotesize
     %\tiny % usual font size
 \tabcolsep=0.005cm
 \rowcolors{1}{white}{Beige}
 % Options: WhiteSmoke, LightCyan
 
-\begin{longtable}{|l|llllllllllllllllllllllllllllllllllllllllllllllll|}
+%\begin{longtable}{|l|llll|llll|llll|llll|llll|llll|llll|llll|llll|llll|llll|llll|}
+\begin{longtable}[c]{|p{3cm}|*{48}{c}|}
 \hline
 Species & \multicolumn{4}{c}{Jan} & \multicolumn{4}{c}{Feb} & \multicolumn{4}{c}{Mar} &
 \multicolumn{4}{c}{Apr} & \multicolumn{4}{c}{May} & \multicolumn{4}{c}{Jun} &
 \multicolumn{4}{c}{Jul} & \multicolumn{4}{c}{Aug} & \multicolumn{4}{c}{Sep} &
-\multicolumn{4}{c}{Oct} & \multicolumn{4}{c}{Nov} & \multicolumn{4}{c}{Dec} \\
+\multicolumn{4}{c}{Oct} & \multicolumn{4}{c}{Nov} & \multicolumn{4}{c}{Dec} \tabularnewline
 \hline
 \endhead
-
+\hline
+\endfoot
 \input{bt}
-
 \hline
 \end{longtable}
-\setmargins{10mm}{10mm}{2mm}{2mm} %t,b,l,r
 
-%\footnotesize
-\small
-%\setmargins{15mm}{15mm}{10mm}{10mm} %t,b,l,r
-
-Rare species which have been recorded at Trout Lake but are not expected to be seen with any regularity: \input{raresp.txt}\newline
+\normalfont\small
+\linespread{1}
+Rare species which have been recorded at Trout Lake but are 
+not expected to be seen with any regularity: 
+\input{raresp.txt}\newline
 \par
 \input{qtime.txt}
 
+\clearpage
+\setmargins{5mm}{5mm}{10mm}{10mm} %t,b,l,r
 
-\newpage
-\setmargins{15mm}{15mm}{10mm}{10mm} %t,b,l,r
-\normalsize
- 
+\linespread{1}
+\normalfont\large
 \input{backpages}
 
 \end{document}
