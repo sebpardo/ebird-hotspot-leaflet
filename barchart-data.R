@@ -81,4 +81,5 @@ print.xtable(sightchart, file="bt.tex",
              include.rownames = FALSE,
              include.colnames = FALSE,
              only.contents=TRUE,
+             hline.after = NULL,
              sanitize.text.function = function(x) {x})
