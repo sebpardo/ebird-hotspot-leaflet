@@ -76,10 +76,11 @@ cat(paste("eBird database accessed on",qtime), file="qtime.txt")
 sightchart <- xtable(ebird2)
 
 # Exporting to .tex file
-print.xtable(sightchart, file="bt.tex", 
+print.xtable(sightchart, file = "bt.tex", 
              tabular.environment = "longtable",
              include.rownames = FALSE,
              include.colnames = FALSE,
-             only.contents=TRUE,
+             only.contents = TRUE,
              hline.after = NULL,
+             floating = FALSE,
              sanitize.text.function = function(x) {x})
