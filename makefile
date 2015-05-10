@@ -4,13 +4,13 @@ LL = eleaflet
 
 all: leaflet
 
-leaflet: barchart-data.R 
+leaflet: bt.tex
 	pdflatex $(LL).tex
 
-table: barchart-data.R
+table: bt.tex
 
-barchart-data.R: bt.tex
-	R --vanilla $@
+bt.tex: barchart-data.R 
+	Rscript $^
 
 thumbs: bars/b1.gif
 	gif2png bars/*.gif
