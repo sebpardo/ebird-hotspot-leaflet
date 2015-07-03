@@ -48,18 +48,32 @@ cat(raresp, file="raresp.txt")
                    
 ebird2 <- ebird
 
-# transforming each proportion to an integer, so that:
+# Transforming each proportion to a aspecific integer, 
+# given range provided in bar_size(). This closely matches
+# eBird's bar sizes which are much larger for smaller proportions
+# than what would be expected if
 # 0<0.1 -> 1, 0.1<0.2 -> 2, etc...
-ebird2[,-1] <- ceiling(ebird[,-1]*10)
 
-# replacing weeks with zero observations with "u" so that image file
+# Function that converts proportion numbers to bar size integer
+# Vectorized to be applied to whole columns
+bar_size <- function (x) {
+  if(x == 0) "u" else
+    if (x > 0 && x <= 0.01) 1 else
+      if (x > 0.01 && x <= 0.02) 2 else
+        if (x > 0.02 && x <= 0.05) 3 else
+          if (x > 0.05 && x <= 0.1) 4 else
+            if (x > 0.1 && x <= 0.2) 5 else
+              if (x > 0.2 && x <= 0.3) 6 else
+                if (x > 0.3 && x <= 0.4) 7 else
+                  if (x > 0.4 && x <= 0.5) 8 else
+                    if (x > 0.5) 9
+}
+barV <- Vectorize(bar_size)
+
+ebird2[,-1] <- apply(ebird2[,-1],2,barV)
+
+# Note that we replaced weeks with zero observations with "u" so that image file
 # shows lack of sampling
-zeros <- which(sample.size == 0)+1
-ebird2[,zeros] <- "u"
-
-# Replacing all values between 9 and 10 (0.9 and 1.0) with 9,
-# as in eBird the full bar (size 9) is used for anything above 0.8
-ebird2[ebird2 == 10] <- 9
 
 # Replacing content of each cell with .png file according to integer value
 # so that:
