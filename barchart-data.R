@@ -57,7 +57,7 @@ ebird2 <- ebird
 # Function that converts proportion numbers to bar size integer
 # Vectorized to be applied to whole columns
 bar_size <- function (x) {
-  if(x == 0) "u" else
+  if(x == 0) "0" else
     if (x > 0 && x <= 0.01) 1 else
       if (x > 0.01 && x <= 0.02) 2 else
         if (x > 0.02 && x <= 0.05) 3 else
@@ -72,8 +72,10 @@ barV <- Vectorize(bar_size)
 
 ebird2[,-1] <- apply(ebird2[,-1],2,barV)
 
-# Note that we replaced weeks with zero observations with "u" so that image file
+# Replacing weeks with zero observations with "u" so that image file
 # shows lack of sampling
+zeros <- which(sample.size == 0)+1
+ebird2[,zeros] <- "u"
 
 # Replacing content of each cell with .png file according to integer value
 # so that:
