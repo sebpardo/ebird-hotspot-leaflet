@@ -1,16 +1,16 @@
 # Description: Grabs eBird BarChart output (from website, to be done 
 # through R in the future), and saves it as a LaTeX table with xtable()
 
-require(dplyr)
-require(stringr)
-require(xtable)
+library(dplyr)
+library(rebird)
+library(stringr)
+library(xtable)
 
-source("ebirdchart.R")
-
-# Loading data using ebirdchart() function
-troutlake <- ebirdchart("L196159")
-ebird <- troutlake$barchart
-sample.size <- troutlake$sample.size
+# Loading data using ebirdfreq() function from rebird package
+query.time <- Sys.time()
+ebird <- ebirdfreq("hotspots", "L196159", long=FALSE)
+sample.size <- ebird[1,]
+ebird <- ebird[-1,] %>% rename(Species = comName)
 
 # removing text within parentheses for species name
 ebird$Species <- str_replace(ebird$Species, " \\(.*\\)", "")
@@ -43,7 +43,7 @@ rare <- ebird[lessone,"Species"]
 ebird <- ebird[!lessone,]
 
 # Saving all rare species in a single string
-raresp <- paste0(paste(rare, collapse = ", "),".")
+raresp <- paste0(paste(unlist(rare), collapse = ", "),".")
 cat(raresp, file="raresp.txt")
                    
 ebird2 <- ebird
@@ -81,11 +81,11 @@ ebird2[,zeros] <- "u"
 # so that:
 # "2" -> "\includegraphics{bars/s-2.png"}
 for (i in seq_along(ebird2)[-1]) {
-  ebird2[,i] <- paste0("\\includegraphics{bars/s-", ebird2[,i],".png}")
+  ebird2[,i] <- paste0("\\includegraphics{bars/s-", unlist(ebird2[,i]),".png}")
 }
 
 # Saving all rare species in a single string
-qtime <- format(troutlake$query.time, "%B %d %Y at %I:%M %p %Z")
+qtime <- format(query.time, "%B %d %Y at %I:%M %p %Z")
 cat(paste("eBird database accessed on",qtime), file="qtime.txt") 
 
 # Creating xtable object

@@ -1,8 +1,8 @@
-### ebirdchart: download eBird Hotspot Explorer data across years (and make leaflets with it)
+### Make leaflets using eBird Hotspot Explorer data
 
-This code  provides the [`ebirdchart`](ebirdchart.R) function for [R](http://r-project.org) which downloads the bar chart
-data provided by [eBird](http://www.ebird.org) though their website. The function `ebirdchart` does not query eBird's API
-interface the way the functions in [`rebird`](https://github.com/ropensci/rebird) do; instead it uses 
+This code uses the `ebirdfreq` function from the [`rebird`](https://github.com/ropensci/rebird) package in [R](http://r-project.org). It downloads the bar chart
+data provided by [eBird](http://www.ebird.org) though their website. The function `ebirdfreq` does not query eBird's API
+interface the way most other functions in `rebird` do; instead it uses 
 the URL-based interface in eBird's [Hotspot Explorer](http://ebird.org/ebird/hotspots) details pages (example [here](http://ebird.org/ebird/canada/GuideMe?cmd=decisionPage&getLocations=hotspots&hotspots=L196159&yr=all&m=)). Using the URL interface
 allows for extracting hotspot summary data across all years for which eBird has records. On the other
 hand, the API interface provides much more detailed data, but only for recent sightings.
@@ -14,7 +14,7 @@ As an example I use the [Vancouver--Trout Lake (John Hendry Park)](http://ebird.
 
 The basic workflow is as follows (R code [here](barchart-data.R)):
 
-1. Downloading the eBird sightings data and make it a workable data frame using the `ebirdchart` function in R (example of raw data provided by eBird [here](BarChart)).
+1. Downloading the eBird sightings data and make it a workable data frame using the `ebirdfreq` function in R (example of raw data provided by eBird [here](BarChart)).
 2. Deleting records that are not specific of a given species, such as hybrids (e.g. Western x Glaucous-winged Gull), those of potentially two similar species (e.g. Greater/Lesser Scaup), as well as those which cover a genus or broad taxonomic group. (e.g. *Empidonax* sp.). 
 3. Identifying any really long common names so that they can be abbreviated (in Trout Lake only one was changing Northern Rough-winged Swallow to N. Rough-winged Swallow).
 4. Removing all rare species from the data frame. The definition of rare here is any species which only has records for a single week. This
